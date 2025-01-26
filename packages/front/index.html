@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>oKanban</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='24px' height='24px' stroke-width='1.5' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' color='%23000000'%3E%3Cpath d='M3 3.6V20.4C3 20.7314 3.26863 21 3.6 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6Z' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M6 6L6 16' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M10 6V9' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M14 6V13' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3Cpath d='M18 6V11' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3C/path%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script defer type="module" src="./assets/js/index.js"></script>
+  </head>
+
+  <body class="container is-fluid my-6">
+    <header class="my-5">
+      <h1 class="title has-text-centered is-1">oKanban</h1>
+      <button class="button is-info is-outlined" id="add-list-button">
+        <i class="fas fa-plus mr-2"></i>Ajouter une liste
+      </button>
+    </header>
+
+    <main id="lists-container"></main>
+
+    <!-- Modale pour ajouter une liste -->
+    <dialog id="add-list-modal">
+      <div class="modal is-active">
+        <div class="modal-background close-add-list"></div>
+        <div class="modal-card">
+          <form id="add-list-form">
+            <div class="modal-card-head">
+              <p class="modal-card-title">Ajouter une liste</p>
+              <button class="delete close-add-list" type="button" aria-label="close" ></button>
+            </div>
+            <div class="modal-card-body">
+              <label for="add-title" class="label">Titre de la liste</label>
+              <input id="add-title" class="input" type="text" name="title" placeholder="Titre" />
+            </div>
+            <div class="modal-card-foot">
+              <div class="buttons">
+                <button class="button is-success">Ajouter</button>
+                <button class="button close-add-list" type="button"> Annuler </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modale pour modifier une liste -->
+    <dialog id="edit-list-modal">
+      <div class="modal is-active">
+        <div class="modal-background close-edit-list"></div>
+        <div class="modal-card">
+          <form id="edit-list-form">
+            <div class="modal-card-head">
+              <p class="modal-card-title">Modifier le titre de la liste</p>
+              <button class="delete close-edit-list" type="button" aria-label="close" ></button>
+            </div>
+            <div class="modal-card-body">
+              <label for="edit-list-title" class="label" >Titre de la liste</label >
+              <input id="edit-list-title" class="input" type="text" name="title" placeholder="Titre" />
+            </div>
+            <div class="modal-card-foot">
+              <div class="buttons">
+                <button class="button is-success">Modifier</button>
+                <button class="button close-edit-list" type="button"> Annuler </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modale pour supprimer une liste -->
+    <dialog id="delete-list-modal">
+      <div class="modal is-active">
+        <div class="modal-background close-delete-list"></div>
+        <div class="modal-card">
+          <form id="delete-list-form">
+            <div class="modal-card-head">
+              <p class="modal-card-title">Supprimer la liste</p>
+              <button class="delete close-delete-list" type="button" aria-label="close" ></button>
+            </div>
+            <div class="modal-card-body">
+              <p>Confirmez-vous la suppression de la liste?</p>
+            </div>
+            <div class="modal-card-foot">
+              <div class="buttons">
+                <button class="button is-success">Confirmer</button>
+                <button class="button close-delete-list" type="button"> Annuler </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modale pour ajouter une tache -->
+    <dialog id="add-card-modal">
+      <div class="modal is-active">
+        <div class="modal-background close-add-card"></div>
+        <div class="modal-card">
+          <form id="add-card-form">
+            <div class="modal-card-head">
+              <p class="modal-card-title">Ajouter une tâche</p>
+              <button class="delete close-add-card" type="button" aria-label="close" ></button>
+            </div>
+            <div class="modal-card-body">
+              <label for="add-title" class="label">Titre de la tâche</label>
+              <input id="add-title" class="input" type="text" name="title" placeholder="Titre"/>
+              <label>Choisir des tags :</label>
+              <div id="add-card-tags-container"></div>
+            </div>
+            <div class="modal-card-foot">
+              <div class="buttons">
+                <button class="button is-success">Ajouter</button>
+                <button class="button close-add-card" type="button">Annuler</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modale pour modifier une tache -->
+    <dialog id="edit-card-modal">
+      <div class="modal is-active">
+        <div class="modal-background close-edit-card"></div>
+        <div class="modal-card">
+          <form id="edit-card-form">
+            <div class="modal-card-head">
+              <p class="modal-card-title">Modifier le titre de la tâche</p>
+              <button class="delete close-edit-card" type="button" aria-label="close"></button>
+            </div>
+            <div class="modal-card-body">
+              <label for="edit-card-title" class="label">Titre de la tâche</label>
+              <input id="edit-card-title" class="input" type="text" name="title" placeholder="Titre"/>
+              <label>Choisir des tags :</label>
+              <div id="edit-card-tags-container"></div>
+            </div>
+            <div class="modal-card-foot">
+              <div class="buttons">
+                <button class="button is-success">Modifier</button>
+                <button class="button close-edit-card" type="button">Annuler</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modale pour supprimer une tache -->
+    <dialog id="delete-card-modal">
+      <div class="modal is-active">
+        <div class="modal-background close-delete-card"></div>
+        <div class="modal-card">
+          <form id="delete-card-form">
+            <div class="modal-card-head">
+              <p class="modal-card-title">Supprimer la tâche</p>
+              <button class="delete close-delete-card" type="button" aria-label="close"></button>
+            </div>
+            <div class="modal-card-body">
+              <p>Confirmez-vous la suppression de la tâche?</p>
+            </div>
+            <div class="modal-card-foot">
+              <div class="buttons">
+                <button class="button is-success">Confirmer</button>
+                <button class="button close-delete-card" type="button">Annuler</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Template pour une liste -->
+    <template id="list-template">
+      <section class="message is-info list-id" slot="list-id">
+        <div class="message-header">
+          <div class="list-title" slot="list-title">Titre de la liste</div>
+          <div>
+            <!--<span class="icon is-clickable" slot="drag-list-button"><i class="fas fa-arrows-alt"></i></span> -->
+            <span class="icon is-clickable" slot="edit-list-button"><i class="fas fa-pen"></i></span>
+            <span class="icon is-clickable" slot="delete-list-button"><i class="fas fa-trash-alt"></i></span>
+          </div>
+        </div>
+
+        <div class="message-body">
+          <button class="card button is-info is-outlined" id="add-card-button">
+            <i class="fas fa-plus mr-2"></i>Ajouter une tâche
+          </button>
+          <div class="list-content" slot="list-content"></div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Template pour une card -->
+    <template id="card-template">
+      <article class="card is-clickable card-id" slot="card-id">
+        <div class="card-header">
+          <div class="card-header-title has-text-weight-medium card-title" slot="card-title">Titre de la carte</div>
+          <div class="card-header-tag"></div>
+          <div class="card-header-icon">
+            <span class="icon has-text-success" slot="edit-card-button"><i class="fas fa-pencil-alt"></i></span>
+            <span class="icon has-text-danger ml-2" slot="delete-card-button"><i class="fas fa-trash-alt"></i></span>
+          </div>
+        </div>
+      </article>
+    </template>
+    
+  </body>
+</html>

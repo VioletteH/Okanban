@@ -1,0 +1,96 @@
+/// TESTS LISTES
+
+### récupération des listes
+GET http://localhost:3000/lists HTTP/1.1
+
+### récupération de la liste X
+GET http://localhost:3000/lists/1 HTTP/1.1
+
+### création d'une liste
+POST http://localhost:3000/lists HTTP/1.1
+content-type: application/json
+
+{
+    "title": "TESTING",
+    "position": 4
+}
+
+### mise à jour de la liste X
+PATCH http://localhost:3000/lists/4 HTTP/1.1
+content-type: application/json
+
+{    
+    "position": 3
+}
+
+### suppression de la liste X
+DELETE http://localhost:3000/lists/4 HTTP/1.1
+
+/// TESTS CARTES
+
+### récupération des cartes
+GET http://localhost:3000/cards HTTP/1.1
+
+### récupération de la carte X
+GET http://localhost:3000/cards/52 HTTP/1.1
+
+### création d'une carte
+POST http://localhost:3000/cards HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test",
+    "list_id": 3
+}
+
+### mise à jour de la carte X
+PATCH http://localhost:3000/cards/52 HTTP/1.1
+content-type: application/json
+
+{    
+    "title": "new6",
+    "list_id": 3
+}
+
+### suppression de la carte X
+DELETE http://localhost:3000/cards/7 HTTP/1.1
+
+### récupération des cartes de la liste X
+GET http://localhost:3000/lists/1/cards HTTP/1.1
+
+/// TESTS TAGS
+
+### récupération des tags
+GET http://localhost:3000/tags HTTP/1.1
+
+### création d'un tag
+POST http://localhost:3000/tags HTTP/1.1
+content-type: application/json
+
+{
+    "name": "new",
+    "color": "#ba4c0e"
+}
+
+### mise à jour du tag X
+PATCH http://localhost:3000/tags/4 HTTP/1.1
+content-type: application/json
+
+{    
+    "name": "newtest",
+    "color": "#ba4c0e"
+}
+
+### suppression du tag X
+DELETE http://localhost:3000/tags/37 HTTP/1.1
+
+/// TEST TAGS & CARTES
+
+### récupération des tags de la carte X
+GET http://localhost:3000/cards/83/tags HTTP/1.1
+
+### création d'une association carte / tag
+POST http://localhost:3000/cards/55/tags/1 HTTP/1.1
+
+### suppression d'une association carte / tag
+DELETE http://localhost:3000/cards/41/tags/1 HTTP/1.1

@@ -1,0 +1,13 @@
+{
+  "name": "S13-monorepo-okanban",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev:front": "pnpm --filter front run dev",
+    "dev:back": "pnpm --filter back run dev",
+    "dev": "pnpm -r --parallel run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
